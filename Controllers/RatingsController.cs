@@ -18,7 +18,6 @@ namespace AlaElTalab.Controllers
             _userManager = userManager;
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Rate(int bookingId, RatingValue ratingValue)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -26,6 +25,7 @@ namespace AlaElTalab.Controllers
 
             var booking = await _context.Bookings
                 .Include(b => b.ServiceProvider)
+                .Include(b => b.Rating) // Include the rating if it exists
                 .FirstOrDefaultAsync(b => b.BookingId == bookingId && b.Customer.UserId == user.Id);
 
             if (booking == null) return NotFound();
@@ -35,14 +35,10 @@ namespace AlaElTalab.Controllers
                 return BadRequest("You can only rate completed bookings");
             }
 
-            // Check if already rated
-            var existingRating = await _context.Ratings
-                .FirstOrDefaultAsync(r => r.BookingId == bookingId);
-
-            if (existingRating != null)
+            if (booking.Rating != null)
             {
-                existingRating.RatingValue = ratingValue;
-                _context.Update(existingRating);
+                booking.Rating.RatingValue = ratingValue;
+                _context.Update(booking.Rating);
             }
             else
             {
@@ -52,11 +48,15 @@ namespace AlaElTalab.Controllers
                     RatingValue = ratingValue,
                     ServiceProviderId = booking.ServiceProviderId
                 };
+
                 _context.Ratings.Add(rating);
+                await _context.SaveChangesAsync(); 
+
+                booking.RatingId = rating.RatingId;
+                _context.Update(booking);
             }
 
             await _context.SaveChangesAsync();
-
             await UpdateServiceProviderRating(booking.ServiceProviderId);
 
             TempData["SuccessMessage"] = "Thank you for your rating!";

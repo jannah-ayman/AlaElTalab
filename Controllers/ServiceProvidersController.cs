@@ -69,10 +69,7 @@ namespace AlaElTalab.Controllers
             string city, float price, IFormFile profilePicture)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            if (user == null) return NotFound();
 
 
             var serviceProvider = await _context.ServiceProviders
@@ -154,13 +151,11 @@ namespace AlaElTalab.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // 2. Find service provider record
             var serviceProvider = await _context.ServiceProviders
                 .FirstOrDefaultAsync(sp => sp.UserId == user.Id);
 
             if (serviceProvider != null)
             {
-                // 3. Delete profile image (if custom)
                 if (!string.IsNullOrEmpty(serviceProvider.ProfileImage) &&
                     serviceProvider.ProfileImage != "default-profile.png")
                 {
@@ -172,21 +167,16 @@ namespace AlaElTalab.Controllers
                     }
                 }
 
-                // 4. Delete related bookings
                 var bookings = await _context.Bookings
                     .Where(b => b.ServiceProviderId == serviceProvider.ServiceProviderId)
                     .ToListAsync();
                 _context.Bookings.RemoveRange(bookings);
 
-                // 5. Delete service provider record
                 _context.ServiceProviders.Remove(serviceProvider);
                 await _context.SaveChangesAsync();
             }
 
-            // 6. Delete user account
-            await _userManager.DeleteAsync(user);
-
-            // 7. Sign out
+           await _userManager.DeleteAsync(user);
             await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 
             return RedirectToAction("Index", "Home");
@@ -194,30 +184,22 @@ namespace AlaElTalab.Controllers
 
         public async Task<IActionResult> Booking()
         {
-            // Get current logged-in user
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound("User not found");
-            }
+            if (user == null) return NotFound();
 
-            // Find the service provider associated with this user
             var serviceProvider = await _context.ServiceProviders
                 .FirstOrDefaultAsync(sp => sp.UserId == user.Id);
 
-            if (serviceProvider == null)
-            {
-                return NotFound("Service provider not found");
-            }
+            if (serviceProvider == null) return NotFound();
 
             // Get all bookings for this service provider with customer details, excluding cancelled and rejected bookings
             var bookings = await _context.Bookings
                 .Where(b => b.ServiceProviderId == serviceProvider.ServiceProviderId &&
                            b.Status != Status.Cancelled &&
-                           b.Status != Status.Rejected) // Exclude cancelled and rejected bookings
-                .Include(b => b.Customer) // Include customer details
-                .Include(b => b.ServiceProvider) // Include service provider details
-                .OrderByDescending(b => b.DateTime) // Sort by most recent
+                           b.Status != Status.Rejected) 
+                .Include(b => b.Customer) 
+                .Include(b => b.ServiceProvider) 
+                .OrderByDescending(b => b.DateTime) 
                 .ToListAsync();
 
             return View(bookings);

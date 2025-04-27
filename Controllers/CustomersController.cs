@@ -203,7 +203,7 @@ namespace AlaElTalab.Controllers
                 .FirstOrDefaultAsync(c => c.UserId == user.Id);
             if (customer == null) return NotFound();
 
-            // Get housekeepers (ServiceId = 4) in the same city
+            // Get carpenter (ServiceId = 4) in the same city
             var carp = await _context.ServiceProviders
                 .Where(sp => sp.ServiceId == 4 && sp.City == customer.City)
                 .Include(sp => sp.Service) // Include service details if needed
@@ -242,7 +242,7 @@ namespace AlaElTalab.Controllers
                 .FirstOrDefaultAsync(c => c.UserId == user.Id);
             if (customer == null) return NotFound();
 
-            // Get housekeepers (ServiceId = 2) in the same city
+            // Get electricians (ServiceId = 2) in the same city
             var elect = await _context.ServiceProviders
                 .Where(sp => sp.ServiceId == 2 && sp.City == customer.City)
                 .Include(sp => sp.Service) // Include service details if needed
@@ -287,19 +287,16 @@ namespace AlaElTalab.Controllers
         [HttpPost]
         public async Task<IActionResult> ConfirmBooking(int serviceProviderId, DateTime date)
         {
-            if (date.Date < DateTime.Today)
-            {
-                TempData["ErrorMessage"] = "You cannot book appointments in the past. Please select today's date or a future date.";
-                return RedirectToAction("Book", new { serviceProviderId });
-            }
+            //if (date.Date < DateTime.Today)
+            //{
+            //    TempData["ErrorMessage"] = "You cannot book appointments in the past. Please select today's date or a future date.";
+            //    return RedirectToAction("Book", new { serviceProviderId });
+            //}
 
             var userId = _userManager.GetUserId(User);
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.UserId == userId);
 
-            if (customer == null)
-            {
-                return NotFound("Customer not found");
-            }
+            if (customer == null) return NotFound();
 
             var booking = new Booking
             {
@@ -340,7 +337,7 @@ namespace AlaElTalab.Controllers
             var booking = await _context.Bookings.FindAsync(bookingId);
             if (booking == null) return NotFound();
 
-            if (booking.Status == Status.Pending || booking.Status == Status.Confirmed || booking.Status == Status.InProgress)
+            if (booking.Status == Status.Pending || booking.Status == Status.Confirmed)
             {
                 _context.Bookings.Remove(booking);
                 await _context.SaveChangesAsync();

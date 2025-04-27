@@ -135,7 +135,7 @@
                                     <td colspan="2">
                                         <form asp-controller="Customers" asp-action="CancelBooking" method="post">
                                             <input type="hidden" name="bookingId" value="@booking.BookingId" />
-                                            @if (booking.Status == AlaElTalab.Models.Status.Pending || booking.Status == AlaElTalab.Models.Status.Confirmed || booking.Status == AlaElTalab.Models.Status.InProgress)
+                                            @if (booking.Status == AlaElTalab.Models.Status.Pending || booking.Status == AlaElTalab.Models.Status.Confirmed)
                                             {
                                                 <button type="submit" class="sub-btn">Cancel</button>
                                             }
