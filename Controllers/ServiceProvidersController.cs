@@ -66,7 +66,7 @@ namespace AlaElTalab.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Edit(string username, string email, string phoneNumber, 
-            string city, float price)
+            string city, float price, IFormFile profilePicture)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -93,6 +93,49 @@ namespace AlaElTalab.Controllers
             user.Email = email;
             user.PhoneNumber = phoneNumber;
             user.City = city; // If you have the City in your ApplicationUser
+
+            if (profilePicture != null && profilePicture.Length > 0)
+            {
+                var ext = Path.GetExtension(profilePicture.FileName).ToLower();
+                var allowed = new[] { ".jpg", ".jpeg", ".png" };
+                if (!allowed.Contains(ext))
+                {
+                    ModelState.AddModelError("profilePicture", "Only JPG and PNG files are allowed.");
+                    return View(serviceProvider);
+                }
+
+                if (profilePicture.Length > 5 * 1024 * 1024)
+                {
+                    ModelState.AddModelError("profilePicture", "File size must not exceed 5MB.");
+                    return View(serviceProvider);
+                }
+
+                var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                if (!Directory.Exists(uploadsPath))
+                    Directory.CreateDirectory(uploadsPath);
+
+                var newFileName = Guid.NewGuid().ToString() + ext;
+                var filePath = Path.Combine(uploadsPath, newFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profilePicture.CopyToAsync(stream);
+                }
+
+                // Delete old image if exists and is not default
+                if (!string.IsNullOrEmpty(serviceProvider.ProfileImage) &&
+                    serviceProvider.ProfileImage != "default-profile.png")
+                {
+                    var oldFilePath = Path.Combine(uploadsPath, serviceProvider.ProfileImage);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+
+                serviceProvider.ProfileImage = newFileName;
+                user.ProfileImage = newFileName;
+            }
 
             _context.ServiceProviders.Update(serviceProvider);
             await _userManager.UpdateAsync(user);

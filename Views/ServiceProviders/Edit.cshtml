@@ -47,6 +47,8 @@
 
                 <form asp-controller="ServiceProviders" asp-action="Edit" method="post" enctype="multipart/form-data">
 
+                    <label for="profilePicture">Change Profile Picture:</label>
+                    <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
 
                     <label for="name">Full Name:</label>
                     <input type="text" id="name" value="@Model.Name" disabled>
