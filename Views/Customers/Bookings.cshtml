@@ -1,0 +1,160 @@
+﻿@model List<AlaElTalab.Models.Booking>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking</title>
+    <link rel="stylesheet" href="/css/bookings.css">
+    <style>
+        .rating-display {
+            font-size: 1.2em;
+            color: #FFD700; /* Gold color for stars */
+            margin: 10px 0;
+        }
+
+        .rating-text {
+            margin-right: 5px;
+            color: #333;
+        }
+
+        .rating-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="/images/Untitled-design-16.png" valign="middle" hspace="10px">
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                <a asp-controller="Customers" asp-action="Index" class="active">Main Page</a>
+                <a asp-controller="Customers" asp-action="Bookings">My Bookings</a>
+                <a asp-controller="Customers" asp-action="Account">My Account</a>
+                <a asp-area="Identity" asp-page="/Account/Logout">Log Out</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="search-header">
+            <div class="search-title" id="search-title">My Bookings</div>
+        </div>
+
+        <div class="results-section">
+            <div class="providers-list" id="providers-list">
+                @if (Model.Any())
+                {
+                    @foreach (var booking in Model)
+                    {
+                        <div class="provider-card">
+                            <table cellspacing="10px">
+                                <tr>
+                                    <td>Booking ID</td>
+                                    <td class="book-id">@booking.BookingId</td>
+                                </tr>
+                                <tr>
+                                    <td>Service Provider</td>
+                                    <td class="provider-name">@booking.ServiceProvider.Name</td>
+                                </tr>
+                                <tr>
+                                    <td>Cost</td>
+                                    <td class="provider-price">@string.Format("{0} EGP", @booking.ServiceProvider.Price)</td> 
+                                </tr>
+                                <tr>
+                                    <td>Date</td>
+                                    <td class="book-date">@booking.DateTime.ToString("dd/MM/yyyy")</td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td class="status-@booking.Status">@booking.Status</td>
+                                </tr>
+
+                                @if (booking.Status == Status.Completed)
+                                {
+                                    <tr>
+                                        <td>Payment Status</td>
+                                        <td class="payment-status payment-@booking.PaymentStatus.ToString().ToLower()">
+                                            @booking.PaymentStatus.ToString().Replace("_", " ")
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            @if (booking.Rating != null)
+                                            {
+                                                <div class="rating-display">
+                                                    <span class="rating-text">Rating:</span>
+                                                    @switch (booking.Rating.RatingValue)
+                                                    {
+                                                        case AlaElTalab.Models.RatingValue.One:
+                                                            <span>⭐</span>
+                                                            break;
+                                                        case AlaElTalab.Models.RatingValue.Two:
+                                                            <span>⭐⭐</span>
+                                                            break;
+                                                        case AlaElTalab.Models.RatingValue.Three:
+                                                            <span>⭐⭐⭐</span>
+                                                            break;
+                                                        case AlaElTalab.Models.RatingValue.Four:
+                                                            <span>⭐⭐⭐⭐</span>
+                                                            break;
+                                                        case AlaElTalab.Models.RatingValue.Five:
+                                                            <span>⭐⭐⭐⭐⭐</span>
+                                                            break;
+                                                    }
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <form asp-controller="Ratings" asp-action="Rate" method="post" class="rating-form">
+                                                    <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                                    <select name="ratingValue" style="padding: 0px 30px; border-radius: 5px; background-color: transparent; margin-bottom: 20px; border-color: blue;">
+                                                        <option value="One">⭐</option>
+                                                        <option value="Two">⭐⭐</option>
+                                                        <option value="Three">⭐⭐⭐</option>
+                                                        <option value="Four">⭐⭐⭐⭐</option>
+                                                        <option value="Five">⭐⭐⭐⭐⭐</option>
+                                                    </select>
+                                                    <button type="submit" class="sub-btn">Rate</button>
+                                                </form>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <td colspan="2">
+                                        <form asp-controller="Customers" asp-action="CancelBooking" method="post">
+                                            <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                            @if (booking.Status == AlaElTalab.Models.Status.Pending || booking.Status == AlaElTalab.Models.Status.Confirmed || booking.Status == AlaElTalab.Models.Status.InProgress)
+                                            {
+                                                <button type="submit" class="sub-btn">Cancel</button>
+                                            }
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="no-bookings">
+                        <p>You have no bookings yet</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+*{
+    margin : 0;
+    padding : 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #E3EEF0;
+}
+.logo{
+    display: flex;
+    align-items: center;
+}
+.logo img{
+    border-radius: 50px;
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+}
+nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 10px 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+.nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.nav-links a {
+    text-decoration: none;
+    color: #212529;
+    font-weight: 500;
+    transition: color 0.3s;
+    position: relative;
+}
+.nav-links a:hover {
+    color: #0d6efd;
+}
+
+.edit-upcontainer {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 400px;
+    font-family: 'Poppins', sans-serif;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:150px;
+    left:550px;
+}
+.provider-card {
+    /* background-color: #f0f0f0; */
+    padding: 15px;
+    border-bottom: 1px solid #fffefe;
+    align-items: center;
+    border-radius: 10px;
+    /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .provider-card img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    margin-left: 60px;
+  }
+.edit-upcontainer h2 {
+    color: #0d6efd;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+.edit-upcontainer  input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    align-items: center;
+  }
+.edit-upcontainer button {
+    padding: 8px 20px;
+    border: 2px solid #0d6efd;
+    background-color: transparent;
+    color: #0d6efd;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    margin-top: 30px;
+    margin-left: 120px;
+}
+.edit-upcontainer button:hover {
+    background-color: #0d6efd;
+    color: white;
+    transform: scale(1.1);
+}

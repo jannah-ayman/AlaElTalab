@@ -1,0 +1,92 @@
+﻿@model List<AlaElTalab.Models.ServiceProvider>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housekeepers</title>
+    <link rel="stylesheet" href="/css/provider.css">
+</head>
+<body>
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="~/images/Untitled-design-16.png" valign="middle" hspace="10px">
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                <a asp-controller="Customers" asp-action="Index" class="active">Main Page</a>
+                <a asp-controller="Customers" asp-action="Bookings">My Bookings</a>
+                <a asp-controller="Customers" asp-action="Account">My Account</a>
+                <a asp-area="Identity" asp-page="/Account/Logout">Log Out</a>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="search-header">
+            <div class="search-title" id="search-title">
+                Housekeepers in @(Model.Count > 0 ? Model[0].City : "your city")
+            </div>
+        </div>
+        @* <form asp-controller="Customers" asp-action="Index" method="get"> *@
+        @*     <button type="submit" class="back-button">← Back</button> *@
+        @* </form> *@
+
+        <div class="results-section">
+            <div class="providers-list" id="providers-list">
+                @if (Model.Any())
+                {
+                    @foreach (var provider in Model)
+                    {
+                        <div class="provider-card">
+                            <table cellspacing="20px">
+                                <tr>
+                                    <td rowspan="2" colspan="2">
+                                        @if (!string.IsNullOrEmpty(provider.ProfileImage))
+                                        {
+                                            <img src="/uploads/@provider.ProfileImage" class="provider-image">
+                                        }
+                                        else
+                                        {
+                                            <img src="/images/default-profile.png" class="provider-image">
+                                        }
+                                    </td>
+                                </tr>
+                                <tr></tr>
+                                <tr>
+                                    <td>Name</td>
+                                    <td class="provider-name">@provider.Name</td>
+                                </tr>
+                                <tr>
+                                    <td>Price</td>
+                                    <td class="provider-price">@string.Format("{0} EGP", @provider.Price)</td>
+                                </tr>
+                                <tr>
+                                    <td>Rating</td>
+                                    <td class="provider-rating">@provider.AverageRating.ToString("0.0")</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <form asp-controller="Customers" asp-action="Book" method="get">
+                                            <input type="hidden" name="serviceProviderId" value="@provider.ServiceProviderId" />
+                                            <button type="submit" class="sub-btn">Book</button>
+                                        </form>
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No housekeepers available in your city currently.</p>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

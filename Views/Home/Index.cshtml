@@ -1,0 +1,100 @@
+﻿@{
+    Layout = null;
+}
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3la El Talab</title>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="~/images/Untitled-design-16.png" valign="middle" hspace="10px">
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                <a href="#main" class="active">Home</a>
+                <a href="#about">About</a>
+                <a href="#service">Service</a>
+            </div>
+            <div class="auth-buttons">
+                <form asp-area="Identity" asp-page="/Account/Login" method="get">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+
+                <form asp-area="Identity" asp-page="/Account/Register" method="get">
+                    <button type="submit" class="btn btn-secondary">Sign Up As Customer</button>
+                </form>
+                <form asp-area="Identity" asp-page="/Account/RegisterServiceProvider" method="get">
+                    <button type="submit" class="btn btn-secondary">Sign Up As Service Provider</button>
+                </form>
+            </div>
+        </nav>
+    </div>
+    <div class="image">
+        <img src="~/images/Shine and Serenity Woman Tending to the House with Love _ Premium AI-generated image.jpg" valign="middle">
+        <div class="content">
+            <h1>3la El Talab</h1>
+            <p>
+                3la El Talab is your trusted partner for all home services. Whether you need cleaning, maintenance, or quick repairs, we connect you with skilled professionals at the tap of a button. Save time, enjoy peace of mind, and let us take care of your home — quickly, easily, and safely!
+            </p>
+            <div class="a-buttons">
+                <form asp-area="Identity" asp-page="/Account/Login" method="get">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+
+                <form asp-area="Identity" asp-page="/Account/Register" method="get">
+                    <button type="submit" class="btn btn-secondary">Sign Up As Customer</button>
+                </form>
+                <form asp-area="Identity" asp-page="/Account/RegisterServiceProvider" method="get">
+                    <button type="submit" class="btn btn-secondary">Sign Up As Service Provider</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="about" id="about">
+        <h2 id="abouttitle">About Us</h2>
+        <section class="about-section">
+            <div class="about-text">
+                <h2>Who We Are</h2>
+                <p>3la El Talab is a leading home service provider dedicated to making your life easier. We bring together skilled professionals to handle all your home maintenance needs with reliability and excellence.</p>
+                <p>Founded in 2010, we've grown to become the most trusted name in home services, serving thousands of satisfied customers across the region. Our team undergoes rigorous training and background checks to ensure top-quality service.</p>
+
+            </div>
+            <div class="about-image"></div>
+        </section>
+    </div>
+    <div class="service" id="service">
+        <section class="services-section">
+            <h2 id="servicetitle">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3 class="service-title">Comprehensive Cleaning</h3>
+                    <p>Professional deep cleaning services that transform your living space. We use eco-friendly products and advanced techniques to ensure a healthy environment for your family.</p>
+                </div>
+
+                <div class="service-card">
+                    <h3 class="service-title">Maintenance & Repairs</h3>
+                    <p>From plumbing to electrical work, our certified technicians can handle all your home repair needs with efficiency and expertise.</p>
+                </div>
+
+                <div class="service-card">
+                    <h3 class="service-title">Smart Home Solutions</h3>
+                    <p>Upgrade your home with our smart technology installations including security systems, automated lighting, and energy management solutions.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+</body>
+</html>

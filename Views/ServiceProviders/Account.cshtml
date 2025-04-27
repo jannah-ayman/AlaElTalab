@@ -1,0 +1,99 @@
+﻿@model AlaElTalab.Models.ServiceProvider
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="/css/accountProvider.css">
+</head>
+<body>
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="/images/Untitled-design-16.png" valign="middle" hspace="10px">
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                <a asp-controller="ServiceProviders" asp-action="Index" class="active">Main Page</a>
+                <a asp-controller="ServiceProviders" asp-action="Booking">My Bookings</a>
+                <a asp-controller="ServiceProviders" asp-action="Account">My Account</a>
+                <a asp-area="Identity" asp-page="/Account/Logout">Log Out</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="profile-card">
+        @if (!string.IsNullOrEmpty(Model.ProfileImage))
+        {
+            <img src="/uploads/@Model.ProfileImage" alt="Profile Picture">
+        }
+        else
+        {
+            <img src="/uploads/default-profile.png" alt="Profile Picture">
+        }
+
+        <h2>@Model.Name</h2>
+
+        <div class="info">
+            <table cellspacing="20px;">
+                <tr>
+                    <td>Name: </td>
+                    <td>@Model.Name</td>
+                </tr>
+                <tr>
+                    <td>Username: </td>
+                    <td>@Model.Username</td>
+                </tr>
+                <tr>
+                    <td>Service: </td>
+                    <td>@Model.Service?.Name</td> <!-- Display the service name -->
+                </tr>
+                <tr>
+                    <td>Rating: </td>
+                    <td>@Model.AverageRating</td>
+                </tr>
+                <tr>
+                    <td>Email: </td>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <td>City: </td>
+                    <td>@Model.City</td>
+                </tr>
+                <tr>
+                    <td>Phone: </td>
+                    <td>@Model.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <td>Price: </td>
+                    <td>@string.Format("{0} EGP", Model.Price)</td> 
+                </tr>
+                <tr>
+                    <td>
+                        <form asp-controller="ServiceProviders" asp-action="Edit" method="get">
+                            <button type="submit" class="sub-btn">Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-action="Delete" method="post" id="deleteForm">
+                           <button type="button" class="sub-btn" onclick="confirmDelete()">Delete Account</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script>
+        function confirmDelete() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                document.getElementById('deleteForm').submit();
+            }
+        }
+    </script>
+</body>
+</html>

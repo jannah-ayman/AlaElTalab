@@ -1,0 +1,42 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3la El Talab</title>
+    <link rel="stylesheet" href="/css/websiteProvider.css">
+</head>
+<body>
+
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="/images/Untitled-design-16.png" valign="middle" hspace="10px">
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                <a asp-controller="ServiceProviders" asp-action="Index" class="active">Main Page</a>
+                <a asp-controller="ServiceProviders" asp-action="Booking">My Bookings</a>
+                <a asp-controller="ServiceProviders" asp-action="Account">My Account</a>
+                <a asp-area="Identity" asp-page="/Account/Logout">Log Out</a>
+            </div>
+        </nav>
+    </div>
+    <div class="image">
+        <img src="/images/Shine and Serenity Woman Tending to the House with Love _ Premium AI-generated image.jpg" valign="middle">
+        <div class="content">
+            <h1>Welcome, @ViewData["FirstName"]</h1>
+            <p>We warmly welcome our esteemed service provider and look forward to a successful and fruitful collaboration.</p>
+            <div class="auth-buttons">
+                <form asp-controller="ServiceProviders" asp-action="Booking" method="get">
+                    <button type="submit" >View Bookings</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

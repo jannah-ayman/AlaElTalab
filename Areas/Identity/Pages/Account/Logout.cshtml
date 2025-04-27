@@ -1,0 +1,55 @@
+﻿@page
+@model LogoutModel
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@{
+    Layout = null;
+    ViewData["Title"] = "Log out";
+    var isCustomer = (await AuthorizationService.AuthorizeAsync(User, "CustomerOnly")).Succeeded;
+    var isServiceProvider = (await AuthorizationService.AuthorizeAsync(User, "ServiceProviderOnly")).Succeeded;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3la El Talab - Log out</title>
+    <link rel="stylesheet" href="~/css/website.css" />
+    <link rel="stylesheet" href="~/css/logout.css" />
+</head>
+<body>
+
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="/images/Untitled-design-16.png" alt="Logo">
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                @if (isServiceProvider)
+                {
+                    <a asp-controller="ServiceProviders" asp-action="Index" class="active">Main Page</a>
+                    <a asp-controller="ServiceProviders" asp-action="Booking">My Bookings</a>
+                    <a asp-controller="ServiceProviders" asp-action="Account">My Account</a>
+                }
+                else if (isCustomer)
+                {
+                    <a asp-controller="Customers" asp-action="Index" class="active">Main Page</a>
+                    <a asp-controller="Customers" asp-action="Bookings">My Bookings</a>
+                    <a asp-controller="Customers" asp-action="Account">My Account</a>
+                }
+                <a asp-area="Identity" asp-page="/Account/Logout">Log Out</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="logout-section">
+        <h2>We are sad to see you go.</h2>
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+            <button type="submit" class="logout-button">Log Out</button>
+        </form>
+    </div>
+
+</body>
+</html>

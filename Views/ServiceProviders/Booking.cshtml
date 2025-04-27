@@ -1,0 +1,137 @@
+﻿@model List<AlaElTalab.Models.Booking>
+
+@{
+    Layout = null;
+    var today = DateTime.Today;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking</title>
+    <link rel="stylesheet" href="/css/bookingProvider.css">
+
+</head>
+<body>
+
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="/images/Untitled-design-16.png" valign="middle" hspace="10px">
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                <a asp-controller="ServiceProviders" asp-action="Index" class="active">Main Page</a>
+                <a asp-controller="ServiceProviders" asp-action="Booking">My Bookings</a>
+                <a asp-controller="ServiceProviders" asp-action="Account">My Account</a>
+                <a asp-area="Identity" asp-page="/Account/Logout">Log Out</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="search-header">
+            <div class="search-title" id="search-title">My Bookings</div>
+        </div>
+
+        <div class="results-section">
+            <div class="providers-list" id="providers-list">
+                @if (Model.Any())
+                {
+                    @foreach (var booking in Model)
+                    {
+                        <div class="provider-card">
+                            <table cellspacing="10px">
+                                <tr>
+                                    <td>Booking ID</td>
+                                    <td class="book-id">@booking.BookingId</td>
+                                </tr>
+                                <tr>
+                                    <td>Customer</td>
+                                    <td class="customer-name">@booking.Customer.Name</td>
+                                </tr>
+                                <tr>
+                                    <td>Date</td>
+                                    <td class="book-date">@booking.DateTime.ToString("dd/MM/yyyy")</td>
+                                </tr>
+
+                                @if (booking.Status != AlaElTalab.Models.Status.Pending)
+                                {
+                                    <tr>
+                                        <td>Status</td>
+                                        <td class="status-@booking.Status.ToString().ToLower()">@booking.Status</td>
+                                    </tr>
+                                }
+
+                                @if (booking.Status == AlaElTalab.Models.Status.Completed)
+                                {
+                                    <tr>
+                                        <td>Payment Status</td>
+                                        <td class="payment-status @(booking.PaymentStatus == AlaElTalab.Models.PaymentStatus.Paid ? "payment-paid" : "payment-notpaid")">
+                                            @booking.PaymentStatus
+                                        </td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <td colspan="2">
+                                        @if (booking.Status == AlaElTalab.Models.Status.Pending)
+                                        {
+                                            <form asp-controller="ServiceProviders" asp-action="ConfirmBooking" method="post" style="display: inline-block;">
+                                                <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                                <button type="submit" class="sub-btn confirm-btn">Confirm</button>
+                                            </form>
+                                            <form asp-controller="ServiceProviders" asp-action="RejectBooking" method="post" style="display: inline-block;">
+                                                <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                                <button type="submit" class="sub-btn reject-btn">Reject</button>
+                                            </form>
+                                        }
+                                        else if (booking.Status == AlaElTalab.Models.Status.Confirmed)
+                                        {
+                                            var bookingDate = booking.DateTime.Date;
+                                            if (bookingDate == today)
+                                            {
+                                                <form asp-controller="ServiceProviders" asp-action="StartProgress" method="post" style="display: inline-block;">
+                                                    <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                                    <button type="submit" class="sub-btn progress-btn">Start Work</button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <span class="info-message">Available on @bookingDate.ToString("dd/MM/yyyy")</span>
+                                            }
+                                        }
+                                        else if (booking.Status == AlaElTalab.Models.Status.InProgress)
+                                        {
+                                            <form asp-controller="ServiceProviders" asp-action="CompleteBooking" method="post" style="display: inline-block;">
+                                                <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                                <button type="submit" class="sub-btn complete-btn">Complete</button>
+                                            </form>
+                                        }
+                                        else if (booking.Status == AlaElTalab.Models.Status.Completed &&
+                                        booking.PaymentStatus == AlaElTalab.Models.PaymentStatus.Not_Paid)
+                                        {
+                                            <form asp-controller="ServiceProviders" asp-action="MarkAsPaid" method="post" style="display: inline-block;">
+                                                <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                                <button type="submit" class="sub-btn paid-btn">Mark as Paid</button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="no-bookings">
+                        <p>You have no bookings yet</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

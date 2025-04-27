@@ -1,0 +1,77 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3la El Talab</title>
+    <link rel="stylesheet" href="~/css/website.css">
+</head>
+<body>
+
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="/images/Untitled-design-16.png" valign="middle" hspace="10px">
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                <a asp-controller="Customers" asp-action="Index" class="active">Main Page</a>
+                <a asp-controller="Customers" asp-action="Bookings">My Bookings</a>
+                <a asp-controller="Customers" asp-action="Account">My Account</a>
+                <a asp-area="Identity" asp-page="/Account/Logout">Log Out</a>
+            </div>
+
+        </nav>
+    </div>
+    <div class="image">
+        <img src="/images/Shine and Serenity Woman Tending to the House with Love _ Premium AI-generated image.jpg" valign="middle">
+        <div class="content">
+            <h1>Welcome, @ViewData["FirstName"]</h1>
+            <p>Your home needs it? We deliver it — fast and easy!</p>
+        </div>
+    </div>
+    <div class="services">
+        <h2 id="servicetitle">Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3 class="service-title">Plumbing</h3>
+                <p>We provide top plumbing services for efficient repair and installation of water systems.</p>
+                <form asp-controller="Customers" asp-action="Plumber" method="get">
+                    <button type="submit" id="serv-btn" class="btn btn-primary">Go</button>
+                </form>
+            </div>
+            <div class="service-card">
+                <h3 class="service-title">
+                    Electrical Services
+                </h3>
+                <p>Our electrical experts are ready to install and maintain all your electrical systems safely and professionally.</p>
+
+                <form asp-controller="Customers" asp-action="Electrician" method="get">
+                    <button type="submit" id="serv-btn" class="btn btn-primary">Go</button>
+                </form>
+
+
+            </div>
+            <div class="service-card">
+                <h3 class="service-title">Carpentry</h3>
+                <p>We offer carpentry services for crafting and repairing furniture and wooden structures with precision.</p>
+                <form asp-controller="Customers" asp-action="Carpenter" method="get">
+                    <button type="submit" id="serv-btn" class="btn btn-primary">Go</button>
+                </form>
+            </div>
+            <div class="service-card">
+                <h3 class="service-title">Housekeeping</h3>
+                <p>Get comprehensive cleaning services to keep your space spotless and well-organized</p>
+                <form asp-controller="Customers" asp-action="Cleaning" method="get">
+                    <button type="submit" id="serv-btn" class="btn btn-primary">Go</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</body>
+</html>

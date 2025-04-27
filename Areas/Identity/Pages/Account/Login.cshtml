@@ -1,0 +1,63 @@
+﻿@page
+@model LoginModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log In</title>
+    <link rel="stylesheet" href="/css/signup_customer.css" />
+</head>
+<body>
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="/images/Untitled-design-16.png" valign="middle" hspace="10px" />
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                <a asp-controller="Home" asp-action="Index" class="active">Home</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="sign-upcontainer" id="signup-container">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="already-logged-in">
+                <h2>You're already logged in!</h2>
+                <p>Redirecting you to your dashboard...</p>
+            </div>
+            <script>
+                setTimeout(function() {
+                    window.location.href = '@(User.IsInRole("Customer") ? "/Customers/Index" : "/ServiceProviders/Index")';
+                }, 1500);
+            </script>
+        }
+        else
+        {
+            <h2>Log In</h2>
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <label asp-for="Input.Username">Username:</label>
+                <input asp-for="Input.Username" type="text" placeholder="Enter your username" required />
+                <span asp-validation-for="Input.Username" class="text-danger"></span>
+
+                <label asp-for="Input.Password">Password:</label>
+                <input asp-for="Input.Password" type="password" placeholder="Enter your password" required />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                <button type="submit">Log In</button>
+            </form>
+        }
+    </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>

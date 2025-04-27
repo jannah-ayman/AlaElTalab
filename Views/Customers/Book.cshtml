@@ -1,0 +1,68 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Booking</title>
+    <link rel="stylesheet" href="/css/book.css">
+</head>
+<body>
+
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="/images/Untitled-design-16.png" valign="middle" hspace="10px">
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                <a asp-controller="Customers" asp-action="Index" class="active">Main Page</a>
+                <a asp-controller="Customers" asp-action="Bookings">My Bookings</a>
+                <a asp-controller="Customers" asp-action="Account">My Account</a>
+                <a asp-area="Identity" asp-page="/Account/Logout">Log Out</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="search-header">
+            <div class="search-title" id="search-title">New Booking</div>
+        </div>
+
+        <div class="book-card">
+            <form asp-controller="Customers" asp-action="ConfirmBooking" method="post">
+                <input type="hidden" name="serviceProviderId" value="@ViewBag.ServiceProviderId" />
+                <table cellspacing="10px">
+                    <tr>
+                        <td>Provider Name</td>
+                        <td class="provider-name">@ViewBag.ProviderName</td>
+                    </tr>
+                    <tr>
+                        <td>Cost</td>
+                        <td class="provider-price">@ViewBag.Price</td>
+                    </tr>
+                    <tr>
+                        <td>Location</td>
+                        <td class="provider-location">@ViewBag.Location</td>
+                    </tr>
+                    <tr>
+                        <td>Select Date</td>
+                        <td>
+                            <input type="date" name="date" required
+                                   min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" class="sub-btn">Confirm Booking</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

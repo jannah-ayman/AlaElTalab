@@ -1,0 +1,79 @@
+﻿@page
+@model RegisterServiceProviderModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up as Service Provider</title>
+    <link rel="stylesheet" href="~/css/signup_provider.css" />
+</head>
+<body>
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="~/images/Untitled-design-16.png" valign="middle" hspace="10px" />
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                <a asp-controller="Home" asp-action="Index" class="active">Home</a>
+                <a asp-page="/Account/Login">Log In Instead?</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="sign-upcontainer" id="signup-container">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div> 
+            <h2>Sign Up as Provider</h2>
+
+            <label asp-for="Input.Name"></label>
+            <input asp-for="Input.Name" />
+            <span asp-validation-for="Input.Name"></span>
+
+            <label asp-for="Input.Username"></label>
+            <input asp-for="Input.Username" />
+            <span asp-validation-for="Input.Username"></span>
+
+            <label asp-for="Input.Email"></label>
+            <input asp-for="Input.Email" />
+            <span asp-validation-for="Input.Email"></span>
+
+            <label asp-for="Input.PhoneNumber">Phone:</label>
+            <input asp-for="Input.PhoneNumber" type="tel" placeholder="Phone Number" required pattern="[0-9]{10,15}" />
+            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+
+
+            <label asp-for="Input.City"></label>
+            <input asp-for="Input.City" />
+            <span asp-validation-for="Input.City"></span>
+
+            <label asp-for="Input.Price"></label>
+            <input asp-for="Input.Price" type="number" />
+            <span asp-validation-for="Input.Price"></span>
+
+            <label asp-for="Input.ServiceId"></label>
+            <select asp-for="Input.ServiceId" asp-items="Model.ServiceList"></select>
+            <span asp-validation-for="Input.ServiceId" class="text-danger"></span>
+
+            <label asp-for="Input.ProfileImageFile">Profile Image *</label>
+            <input asp-for="Input.ProfileImageFile" type="file" required />
+            <span asp-validation-for="Input.ProfileImageFile"></span>
+
+            <label asp-for="Input.Password"></label>
+            <input asp-for="Input.Password" type="password" />
+            <span asp-validation-for="Input.Password"></span>
+
+            <label asp-for="Input.ConfirmPassword"></label>
+            <input asp-for="Input.ConfirmPassword" type="password" />
+            <span asp-validation-for="Input.ConfirmPassword"></span>
+
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <partial name="_ValidationScriptsPartial" />
+</body>
+</html>

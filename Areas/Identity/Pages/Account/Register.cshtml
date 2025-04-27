@@ -1,0 +1,73 @@
+﻿@page
+@model RegisterModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="/css/signup_customer.css" />
+</head>
+<body>
+    <div class="main" id="main">
+        <nav>
+            <div class="logo">
+                <img src="/images/Untitled-design-16.png" valign="middle" hspace="10px" />
+                <h2>3la El Talab</h2>
+            </div>
+            <div class="nav-links">
+                <a asp-controller="Home" asp-action="Index" class="active">Home</a>
+                <a asp-page="/Account/Login">Log In Instead?</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="sign-upcontainer" id="signup-container">
+        <h2>Sign Up</h2>
+
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <label asp-for="Input.Name">Full Name:</label>
+            <input asp-for="Input.Name" type="text" placeholder="Full Name" required />
+            <span asp-validation-for="Input.Name" class="text-danger"></span>
+
+            <label asp-for="Input.Username">Username:</label>
+            <input asp-for="Input.Username" type="text" placeholder="Username" required />
+            <span asp-validation-for="Input.Username" class="text-danger"></span>
+
+            <label asp-for="Input.Email">Email:</label>
+            <input asp-for="Input.Email" type="email" placeholder="Email" required />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+            <label asp-for="Input.City">City:</label>
+            <input asp-for="Input.City" type="text" placeholder="City" required />
+            <span asp-validation-for="Input.City" class="text-danger"></span>
+
+            <label asp-for="Input.PhoneNumber">Phone:</label>
+            <input asp-for="Input.PhoneNumber" type="tel" placeholder="Phone Number" required pattern="[0-9]{10,15}" />
+            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+
+            <label>Profile Image</label>
+            <input asp-for="Input.ProfileImageFile" type="file" />
+
+            <label asp-for="Input.Password">Password:</label>
+            <input asp-for="Input.Password" type="password" placeholder="Enter a strong password" required />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+            <label asp-for="Input.ConfirmPassword">Confirm Password:</label>
+            <input asp-for="Input.ConfirmPassword" type="password" placeholder="Re-enter your password" required />
+            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>
