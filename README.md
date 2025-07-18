@@ -35,7 +35,7 @@ AlaElTalab is a full-stack web application built with ASP.NET Core MVC. It conne
    ```bash
    git clone https://github.com/jannah-ayman/AlaElTalab
    cd AlaElTalab
-````
+```
 
 2. **Set up the database:**
 
